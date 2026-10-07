@@ -7,5 +7,5 @@
 
 ## Frontend
 1 - Faça somente um arquivo (seu merda)
-2 - Em um <ul> apresente todos os usuários cadastrados
+2 - Em um ul apresente todos os usuários cadastrados
 3 - Crie um formulário que adiciona um novo usuário
