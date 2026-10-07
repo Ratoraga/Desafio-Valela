@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Usuários</title>
+</head>
+
+<body>
+    <ul class="display"></ul>
+    <div class="container">
+        <form id="userForm">
+            <input type="text" name="username" placeholder="Digite o nome do usuário" required>
+            <input type="email" name="email" placeholder="Digite o email do usuário" required>
+            <input type="password" name="password" placeholder="Digite a senha do usuário" required>
+            <button type="submit">Adicionar</button>
+        </form>
+    </div>
+    <script>
+        const display = document.querySelector(".display");
+        const form = document.querySelector("#userForm");
+
+        async function carregarUsuarios() {
+            try {
+                const response = await fetch("/user");
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar usuários");
+                }
+                const users = await response.json();
+                display.innerHTML = "";
+                users.forEach(user => {
+                    display.innerHTML += `<li>${user.username}</li>`;});
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const response = await fetch("/user", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: form.username.value,
+                    email: form.email.value,
+                    password: form.password.value
+                })
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                alert(data.message);
+                return;
+            }
+            form.reset();
+            carregarUsuarios();
+        });
+
+        carregarUsuarios();
+    </script>
+
+</body>
+
+</html>
